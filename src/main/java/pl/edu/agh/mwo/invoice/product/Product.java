@@ -1,7 +1,6 @@
 package pl.edu.agh.mwo.invoice.product;
 
 import java.math.BigDecimal;
-import java.util.Calendar;
 
 public abstract class Product {
     private final String name;
