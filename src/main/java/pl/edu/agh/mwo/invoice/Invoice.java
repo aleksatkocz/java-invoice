@@ -45,7 +45,7 @@ public class Invoice {
         return totalTax;
     }
 
-    public BigDecimal getGrosPrice() {
+    public BigDecimal getGrossPrice() {
         return getNetPrice().add(getTax());
     }
 }

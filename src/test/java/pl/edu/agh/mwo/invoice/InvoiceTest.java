@@ -21,7 +21,7 @@ public class InvoiceTest {
     }
 
     @Test
-    public void testEmptyInvoiceHasEmptySubtotal() {
+    public void testEmptyInvoiceHasEmptyNetPrice() {
         Assert.assertThat(BigDecimal.ZERO, Matchers.comparesEqualTo(invoice.getNetPrice()));
     }
 
@@ -31,12 +31,12 @@ public class InvoiceTest {
     }
 
     @Test
-    public void testEmptyInvoiceHasEmptyTotal() {
-        Assert.assertThat(BigDecimal.ZERO, Matchers.comparesEqualTo(invoice.getGrosPrice()));
+    public void testEmptyInvoiceHasEmptyGrossPrice() {
+        Assert.assertThat(BigDecimal.ZERO, Matchers.comparesEqualTo(invoice.getGrossPrice()));
     }
 
     @Test
-    public void testInvoiceSubtotalWithTwoDifferentProducts() {
+    public void testInvoiceNetPriceWithTwoDifferentProducts() {
         Product onions = new TaxFreeProduct("Warzywa", new BigDecimal("10"));
         Product apples = new TaxFreeProduct("Owoce", new BigDecimal("10"));
         invoice.addProduct(onions);
@@ -45,21 +45,21 @@ public class InvoiceTest {
     }
 
     @Test
-    public void testInvoiceSubtotalWithManySameProducts() {
+    public void testInvoiceNetPriceWithManySameProducts() {
         Product onions = new TaxFreeProduct("Warzywa", BigDecimal.valueOf(10));
         invoice.addProduct(onions, 100);
         Assert.assertThat(new BigDecimal("1000"), Matchers.comparesEqualTo(invoice.getNetPrice()));
     }
 
     @Test
-    public void testInvoiceHasTheSameSubtotalAndTotalIfTaxIsZero() {
+    public void testInvoiceHasTheSameNetPriceAndGrossPriceIfTaxIsZero() {
         Product taxFreeProduct = new TaxFreeProduct("Warzywa", new BigDecimal("199.99"));
         invoice.addProduct(taxFreeProduct);
-        Assert.assertThat(invoice.getGrosPrice(), Matchers.comparesEqualTo(invoice.getNetPrice()));
+        Assert.assertThat(invoice.getGrossPrice(), Matchers.comparesEqualTo(invoice.getNetPrice()));
     }
 
     @Test
-    public void testInvoiceHasProperSubtotalForManyProducts() {
+    public void testInvoiceHasProperNetPriceForManyProducts() {
         invoice.addProduct(new TaxFreeProduct("Owoce", new BigDecimal("200")));
         invoice.addProduct(new DairyProduct("Maslanka", new BigDecimal("100")));
         invoice.addProduct(new OtherProduct("Wino", new BigDecimal("10")));
@@ -78,18 +78,18 @@ public class InvoiceTest {
     }
 
     @Test
-    public void testInvoiceHasProperTotalValueForManyProduct() {
+    public void testInvoiceHasProperGrossPriceValueForManyProduct() {
         // price with tax: 200
         invoice.addProduct(new TaxFreeProduct("Maskotki", new BigDecimal("200")));
         // price with tax: 108
         invoice.addProduct(new DairyProduct("Maslo", new BigDecimal("100")));
         // price with tax: 12.30
         invoice.addProduct(new OtherProduct("Chipsy", new BigDecimal("10")));
-        Assert.assertThat(new BigDecimal("320.30"), Matchers.comparesEqualTo(invoice.getGrosPrice()));
+        Assert.assertThat(new BigDecimal("320.30"), Matchers.comparesEqualTo(invoice.getGrossPrice()));
     }
 
     @Test
-    public void testInvoiceHasPropoerSubtotalWithQuantityMoreThanOne() {
+    public void testInvoiceHasPropoerNetPriceWithQuantityMoreThanOne() {
         // 2x kubek - price: 10
         invoice.addProduct(new TaxFreeProduct("Kubek", new BigDecimal("5")), 2);
         // 3x kozi serek - price: 30
@@ -100,14 +100,14 @@ public class InvoiceTest {
     }
 
     @Test
-    public void testInvoiceHasPropoerTotalWithQuantityMoreThanOne() {
+    public void testInvoiceHasPropoerGrossPriceWithQuantityMoreThanOne() {
         // 2x chleb - price with tax: 10
         invoice.addProduct(new TaxFreeProduct("Chleb", new BigDecimal("5")), 2);
         // 3x chedar - price with tax: 32.40
         invoice.addProduct(new DairyProduct("Chedar", new BigDecimal("10")), 3);
         // 1000x pinezka - price with tax: 12.30
         invoice.addProduct(new OtherProduct("Pinezka", new BigDecimal("0.01")), 1000);
-        Assert.assertThat(new BigDecimal("54.70"), Matchers.comparesEqualTo(invoice.getGrosPrice()));
+        Assert.assertThat(new BigDecimal("54.70"), Matchers.comparesEqualTo(invoice.getGrossPrice()));
     }
 
     @Test(expected = IllegalArgumentException.class)
