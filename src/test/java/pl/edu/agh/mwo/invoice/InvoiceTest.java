@@ -7,7 +7,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import pl.edu.agh.mwo.invoice.Invoice;
 import pl.edu.agh.mwo.invoice.product.DairyProduct;
 import pl.edu.agh.mwo.invoice.product.OtherProduct;
 import pl.edu.agh.mwo.invoice.product.Product;
@@ -125,4 +124,21 @@ public class InvoiceTest {
     public void testAddingNullProduct() {
         invoice.addProduct(null);
     }
+
+    @Test
+    public void testInvoiceHasNumber(){
+        int number = new Invoice().getNumber();
+    }
+    @Test
+    public void testInvoiceNumberGreaterThanZero(){
+        Assert.assertThat(new Invoice().getNumber(), Matchers.greaterThan(0));
+    }
+    @Test
+    public void testTwoInvoicesHaveDifferentNumbers(){
+        int no1 = new Invoice().getNumber();
+        int no2 = new Invoice().getNumber();
+        Assert.assertTrue(no1 != no2);
+    }
+
+//    dodać test z tym ze nr faktury nie powinien być mniejszy od poprzedniego
 }
