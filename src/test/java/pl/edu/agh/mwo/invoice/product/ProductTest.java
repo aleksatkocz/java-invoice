@@ -1,14 +1,18 @@
 package pl.edu.agh.mwo.invoice.product;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.Date;
 
 import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Test;
 
+import pl.edu.agh.mwo.invoice.InvoiceUtil;
+import pl.edu.agh.mwo.invoice.InvoiceUtilTest;
 import pl.edu.agh.mwo.invoice.product.Product;
 
-public class ProductTest {
+public class   ProductTest {
     @Test
     public void testProductNameIsCorrect() {
         Product product = new OtherProduct("buty", new BigDecimal("100.0"));
@@ -33,6 +37,18 @@ public class ProductTest {
     public void testPriceWithTax() {
         Product product = new DairyProduct("Oscypek", new BigDecimal("100.0"));
         Assert.assertThat(new BigDecimal("108"), Matchers.comparesEqualTo(product.getPriceWithTax()));
+    }
+
+    @Test
+    public void testPriceWithExcise() {
+        BigDecimal basePrice = new BigDecimal("100.0");
+        ExciseProduct product = new BottleOfWine("Wino", basePrice);
+
+        BigDecimal excise = new BigDecimal("5.56");
+        BigDecimal tax = new BigDecimal("0.23");
+        BigDecimal calculatedPriceWithTaxAndExcise = basePrice.add(basePrice.multiply(tax)).add(excise);
+
+        Assert.assertThat(calculatedPriceWithTaxAndExcise, Matchers.comparesEqualTo(product.getPriceWithTax()));
     }
 
     @Test(expected = IllegalArgumentException.class)
